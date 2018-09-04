@@ -13,27 +13,55 @@ body{
 	background: linear-gradient(to right, #84fab0 0%, #8fd3f4 51%, #84fab0 100%);
 }
 
+
+.MainThreeBoxCont{
+	width:80%;
+	height: 95%;
+	float: right;
+	position: relative;
+	display: inline-block;
+}
+
+.OwnerBox{
+	height: 90%;
+	width: 49.5%;
+	display: inline-block;
+	position: relative;
+	border: 1px solid red;
+}
+
+.ReceiverBox{
+	height: 90%;
+	width: 49.5%;
+	display: inline-block;
+	position: relative;
+	border: 1px solid red;
+}
+
+
+
+
 .TextCont{
 	text-align: left;
 	position: relative;
 	display: inline-block;
-	width: 60%;
-	left: 20%;
-	margin-top: 3%;
+	height: 10%;
+	width: 100%;
 }
 
 .MainInputText{
-	padding: 0.5%;
+	padding: 1%;
+	font-size: 1.5em;
+	height: 80%;
 	width: 90%;
 	display: inline-block;
 	position: relative;
 	resize: none;
-	font-size: 2em;
 }
 
 #SendIcon{
 	  position: absolute;
-	  top: 35%;
+	  top: 40%;
 	  left: 95%;
 	  transform: translate(-50%, -50%);
 	cursor: pointer;
@@ -46,4 +74,25 @@ body{
 #SendIcon:hover{
 	color: gray;
 	transition: 400ms;
+}
+
+
+.OwnerSingleMessage{
+	padding: 2%;
+	position: relative;
+	display: inline-block;
+	bottom: 0;
+	float: right;
+	background-color: beige;
+	font-size: 1.2em;
+	border: 1px solid black;
+}
+
+.Time_{
+	float: right;
+	margin-left: 3%;
+}
+
+.InnerMessage{
+	float: right;
 }
