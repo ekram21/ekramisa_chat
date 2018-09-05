@@ -15,27 +15,21 @@ body{
 
 
 .MainThreeBoxCont{
+	padding-top: 2%;
 	width:80%;
-	height: 95%;
+	height: 93%;
 	float: right;
 	position: relative;
 	display: inline-block;
+	margin-right: 2%;
 }
 
-.OwnerBox{
+.MessagesBox{
 	height: 90%;
-	width: 49.5%;
+	width: 100%;
 	display: inline-block;
 	position: relative;
-	border: 1px solid red;
-}
-
-.ReceiverBox{
-	height: 90%;
-	width: 49.5%;
-	display: inline-block;
-	position: relative;
-	border: 1px solid red;
+	overflow-y: auto;
 }
 
 
@@ -77,22 +71,39 @@ body{
 }
 
 
-.OwnerSingleMessage{
-	padding: 2%;
+.SingleMessage{
+	width: 100%;
 	position: relative;
 	display: inline-block;
-	bottom: 0;
-	float: right;
-	background-color: beige;
+	bottom: 0;	
 	font-size: 1.2em;
-	border: 1px solid black;
+}
+
+.MessageContOwner{
+	max-width: 50%;
+	padding: 1%;
+	background-color: beige;
+	float: right;
+}
+
+.MessageContFriend{
+	max-width: 50%;
+	padding: 1%;
+	background-color: beige;
+	float: left;
 }
 
 .Time_{
+	word-wrap: break-word;
+	display: inline-block;
 	float: right;
-	margin-left: 3%;
+	width: 100%;
+	border-bottom: 0.1vw solid rgba(0,0,0,0.4);
 }
 
 .InnerMessage{
+	word-wrap: break-word;
+	display: inline-block;
 	float: right;
+	width: 100%;
 }
