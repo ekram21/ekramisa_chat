@@ -101,9 +101,55 @@ body{
 	border-bottom: 0.1vw solid rgba(0,0,0,0.4);
 }
 
+.MessageWriter{
+	word-wrap: break-word;
+	display: inline-block;
+	float: right;
+	width: 100%;
+}
+
 .InnerMessage{
 	word-wrap: break-word;
 	display: inline-block;
 	float: right;
 	width: 100%;
+}
+
+.NameInputCont{
+	width: 15%;
+	position: absolute;
+	bottom: 50%;
+	left: 1%;
+	display: none;
+}
+
+input {
+	padding: 2%;
+	background-color: black;
+	font-size: 0.7em;
+	color: white;
+	width: 100%;
+	margin-top: 2%;
+}
+
+.Login{
+	display: none;
+}
+
+.chooseFriendName{
+	display: inline-block;
+	position: relative;
+	font-size: 1.2em;
+	color: white;
+	background-color: black;
+	padding: 1%;
+	margin:2%;
+	cursor: pointer;
+	transition: 400ms;
+}
+
+.chooseFriendName:hover{
+	transition: 400ms;
+	color: black;
+	background-color: white;
 }
