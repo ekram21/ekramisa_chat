@@ -13,6 +13,10 @@
 
   $('.TextCont').fadeOut('fast');
 
+
+Naruto3 = 'https://i.imgur.com/bpcqFAz.png';
+NarutoAngry = 'https://i.imgur.com/Z0gqszM.png';
+NarutoSmile = 'https://i.imgur.com/IMX0gLB.png';
   
 function print(x){
     console.log(x);
@@ -100,13 +104,9 @@ document.getElementById('chooseFriendName_ID').addEventListener('click', e => {
 
     $('.TextCont').fadeIn('slow');
 
-    $('.SingleMessage').remove();
-
     friendName = document.getElementById('chooseFriendName_ID').getAttribute("data-main");
 
     document.getElementById('FriendName_ID').value = friendName;
-
-    //FetchMessagesWithTimeAndPopulate(friendName);
 
     var Owner = document.getElementById('LoginID').getAttribute("data-main");
     var RoomID = 'MessageRoom' + Owner + friendName; //Ekram/MessageRoomEkramRamisa
@@ -117,13 +117,17 @@ document.getElementById('chooseFriendName_ID').addEventListener('click', e => {
 
     AutoPollingUpdater(address);
 
+    $('.SingleMessage').remove();
+
+    FetchMessagesWithTimeAndPopulate(friendName);
+
 });
 
 
 
 document.getElementById('SendIcon').addEventListener('click', e => {
 
-    var messageToBeSent = document.getElementById('MainInputText_Id').value;
+    var messageToBeSent = EncodeString(document.getElementById('MainInputText_Id').value);
 
     var Owner = document.getElementById('LoginID').getAttribute("data-main");
     var Friend = document.getElementById('FriendName_ID').value;
@@ -134,7 +138,7 @@ document.getElementById('SendIcon').addEventListener('click', e => {
 
     onlyTime = String(d).split(' ')[4];
 
-   CreateSingleMessage('Owner', Owner, messageToBeSent, onlyTime);
+   //CreateSingleMessage('Owner', Owner, messageToBeSent, onlyTime);
 
    document.getElementById('MainInputText_Id').value = ''; //reset the input area to null
 
@@ -208,7 +212,7 @@ function FetchMessagesWithTimeAndPopulate(FriendName){
                 var key3;
                 for (key3 in ActualJSON[key2]){
                     TimeArray.push(key3);
-                    MessageArray.push(ActualJSON[key2][key3]);
+                    MessageArray.push(DecodeString(ActualJSON[key2][key3]));
                 }
             }
         }
@@ -226,9 +230,12 @@ function FetchMessagesWithTimeAndPopulate(FriendName){
                 break;
             }
 
-            CreateSingleMessage(recipient, messageOwner[i], MessageArray[i], TimeArray[i]);
+            CreateSingleMessage(recipient, messageOwner[i], MessageArray[i], tConvert(TimeArray[i]));
 
         }
+
+        var elem = document.getElementById('MessagesBox_ID');
+        elem.scrollTop = elem.scrollHeight;
 
     });
 
@@ -239,13 +246,44 @@ function FetchMessagesWithTimeAndPopulate(FriendName){
 
 function handleEvent(event, snapshot, optionalPreviousChildKey) {
 
-    console.log('Detected change in database, now repopulating..');
+    messageWriter = '';
+    messageTime = '';
+    innerMessage = '';
 
-    $('.SingleMessage').remove();
+    var Friend = document.getElementById('FriendName_ID').value;
+    var Owner = document.getElementById('LoginID').getAttribute("data-main");
 
-    friendName = document.getElementById('chooseFriendName_ID').getAttribute("data-main");
+    console.log(snapshot.val());
 
-    FetchMessagesWithTimeAndPopulate(friendName);
+    var key;
+    for (key in snapshot.val()) {
+        messageWriter = key;
+
+        var key2;
+        for (key2 in snapshot.val()[key]){
+            messageTime = key2;
+            innerMessage = DecodeString(snapshot.val()[key][key2]);
+        }
+    }
+
+    recipient = '';
+    if (messageWriter == Owner){
+        recipient = 'Owner';
+    }
+    else if (messageWriter == Friend){
+        recipient = 'Friend';
+    }
+
+    CreateSingleMessage(recipient, messageWriter, innerMessage, tConvert(messageTime));
+
+    var elem = document.getElementById('MessagesBox_ID');
+    elem.scrollTop = elem.scrollHeight;
+
+    // $('.SingleMessage').remove();
+
+    // friendName = document.getElementById('chooseFriendName_ID').getAttribute("data-main");
+
+    // FetchMessagesWithTimeAndPopulate(friendName);
 }
 
 function AutoPollingUpdater(address){
@@ -255,10 +293,32 @@ function AutoPollingUpdater(address){
 }
 
 
+function EncodeString(inputString) {
+    outputstring = encodeURIComponent(inputString).replace(/\./g, '%2E');
 
+    return outputstring
+}
 
+function DecodeString(inputString) {
+    outputstring = decodeURIComponent(inputString);
+    withoutdots = outputstring.replace('%2E','.');
 
+    return withoutdots
+}
 
+function tConvert (time) {
+  // Check correct time format and split into components
+  time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+  if (time.length > 1) { // If time format correct
+    time = time.slice (1);  // Remove full string match value
+    time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+    time[0] = +time[0] % 12 || 12; // Adjust hours
+
+  }
+
+  return time.join (''); // return adjusted time or original string
+}
 
 
 
