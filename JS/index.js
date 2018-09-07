@@ -12,6 +12,7 @@
   var database = firebase.database();
 
   $('.TextCont').fadeOut('fast');
+
   
 function print(x){
     console.log(x);
@@ -232,9 +233,6 @@ function FetchMessagesWithTimeAndPopulate(FriendName){
     });
 
 }
-
-
-
 
 
 
