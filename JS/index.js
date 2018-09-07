@@ -278,12 +278,6 @@ function handleEvent(event, snapshot, optionalPreviousChildKey) {
 
     var elem = document.getElementById('MessagesBox_ID');
     elem.scrollTop = elem.scrollHeight;
-
-    // $('.SingleMessage').remove();
-
-    // friendName = document.getElementById('chooseFriendName_ID').getAttribute("data-main");
-
-    // FetchMessagesWithTimeAndPopulate(friendName);
 }
 
 function AutoPollingUpdater(address){
