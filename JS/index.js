@@ -98,6 +98,9 @@ function CreateSingleMessage(Recipient, messageWriter, Message_, OnlyTIME){
         print('CreateSingleMessage function invalid Recipent input..');
     }
 
+    $('.SingleMessage').fadeIn('fast');
+    $('.SingleMessage').css('display', 'inline-block');
+
 }
 
 document.getElementById('chooseFriendName_ID').addEventListener('click', e => {
@@ -313,10 +316,4 @@ function tConvert (time) {
 
   return time.join (''); // return adjusted time or original string
 }
-
-
-
-
-
-
 
