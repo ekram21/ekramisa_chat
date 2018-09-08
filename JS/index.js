@@ -98,11 +98,13 @@ function CreateSingleMessage(Recipient, messageWriter, Message_, OnlyTIME){
         print('CreateSingleMessage function invalid Recipent input..');
     }
 
-    $('.SingleMessage').fadeIn('fast');
+    $('.SingleMessage').fadeIn('slow');
     $('.SingleMessage').css('display', 'inline-block');
 
 }
 
+
+//this is event for clicking on friend name to load chat
 document.getElementById('chooseFriendName_ID').addEventListener('click', e => {
 
     $('.TextCont').fadeIn('slow');
@@ -127,65 +129,31 @@ document.getElementById('chooseFriendName_ID').addEventListener('click', e => {
 });
 
 
-
+//this is event for clicking on the send icon
 document.getElementById('SendIcon').addEventListener('click', e => {
 
-    var messageToBeSent = EncodeString(document.getElementById('MainInputText_Id').value);
-
-    var Owner = document.getElementById('LoginID').getAttribute("data-main");
-    var Friend = document.getElementById('FriendName_ID').value;
-    var messageWriter = Owner;
-
-    var d = new Date();
-    d.toUTCString();
-
-    onlyTime = String(d).split(' ')[4];
-
-   //CreateSingleMessage('Owner', Owner, messageToBeSent, onlyTime);
-
-   document.getElementById('MainInputText_Id').value = ''; //reset the input area to null
-
-
-
-   //DATABASE STUFF
-   //now enter this data in own firebase and friends firebase
-   var ownRoomID = 'MessageRoom' + Owner + Friend;
-
-   var ref = database.ref(Owner + '/' + ownRoomID + '/'); // Ekram/MessageRoomEkramRamisa/
-
-   var data = {};
-
-   data[messageWriter] = {};
-
-   data[messageWriter] = {
-    [onlyTime] : messageToBeSent
-   };
-
-   ref.push(data).then(function(){
-        print('Successfully sent message!');
-
-        //now write this message in friends RoomID database
-
-        if (Friend!=null){
-            var friendRoomID = 'MessageRoom' + Friend + Owner;
-
-            var ref = database.ref(Friend + '/' + friendRoomID + '/');
-
-           var data = {};
-
-           data[messageWriter] = {};
-
-            data[messageWriter] = {
-                [onlyTime] : messageToBeSent
-            };
-
-            ref.push(data);
-        }
-
-   })
+    SendMessage();
 
 });
 
+
+//event for snding text by pressing the enter button
+document.addEventListener('keydown', (event) => {
+
+    const keyName = event.key;
+
+    IsFocused = $('#MainInputText_Id').is(':focus');    //boolean true if in focus
+
+    IsEmpty = IsTextAreaEmpty();
+
+    IsEnterPressed = IsButtonPressedEnter(keyName);
+
+    if (IsFocused && !IsEmpty && IsEnterPressed) {
+        //send the message
+        SendMessage();
+
+    }
+});
 
 function FetchMessagesWithTimeAndPopulate(FriendName){
 
@@ -237,6 +205,7 @@ function FetchMessagesWithTimeAndPopulate(FriendName){
 
         }
 
+        //this resets the scroll to the bottom
         var elem = document.getElementById('MessagesBox_ID');
         elem.scrollTop = elem.scrollHeight;
 
@@ -248,6 +217,8 @@ function FetchMessagesWithTimeAndPopulate(FriendName){
 
 
 function handleEvent(event, snapshot, optionalPreviousChildKey) {
+
+    document.getElementById('MainInputText_Id').value = null; //reset the input area to null
 
     messageWriter = '';
     messageTime = '';
@@ -281,6 +252,7 @@ function handleEvent(event, snapshot, optionalPreviousChildKey) {
 
     var elem = document.getElementById('MessagesBox_ID');
     elem.scrollTop = elem.scrollHeight;
+
 }
 
 function AutoPollingUpdater(address){
@@ -317,3 +289,80 @@ function tConvert (time) {
   return time.join (''); // return adjusted time or original string
 }
 
+function IsTextAreaEmpty(){
+
+    //must make it so if only enter or space present treats it as empty
+
+    innerString = document.getElementById('MainInputText_Id').value;
+
+    if (innerString=='') {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+function IsButtonPressedEnter(keyName){
+
+    if (keyName=='Enter'){
+        return true;
+    }
+    else {
+        return false;
+    }
+
+}
+
+function SendMessage(){
+    var messageToBeSent = EncodeString(document.getElementById('MainInputText_Id').value);
+
+    var Owner = document.getElementById('LoginID').getAttribute("data-main");
+    var Friend = document.getElementById('FriendName_ID').value;
+    var messageWriter = Owner;
+
+    var d = new Date();
+    d.toUTCString();
+
+    onlyTime = String(d).split(' ')[4];
+
+   //CreateSingleMessage('Owner', Owner, messageToBeSent, onlyTime);
+
+   //DATABASE STUFF
+   //now enter this data in own firebase and friends firebase
+   var ownRoomID = 'MessageRoom' + Owner + Friend;
+
+   var ref = database.ref(Owner + '/' + ownRoomID + '/'); // Ekram/MessageRoomEkramRamisa/
+
+   var data = {};
+
+   data[messageWriter] = {};
+
+   data[messageWriter] = {
+    [onlyTime] : messageToBeSent
+   };
+
+   ref.push(data).then(function(){
+        print('Successfully sent message!');
+
+        //now write this message in friends RoomID database
+
+        if (Friend!=null){
+            var friendRoomID = 'MessageRoom' + Friend + Owner;
+
+            var ref = database.ref(Friend + '/' + friendRoomID + '/');
+
+           var data = {};
+
+           data[messageWriter] = {};
+
+            data[messageWriter] = {
+                [onlyTime] : messageToBeSent
+            };
+
+            ref.push(data);
+            document.getElementById('MainInputText_Id').value = null; //reset the input area to null
+        }
+
+   })
+}
